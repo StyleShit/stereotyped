@@ -111,4 +111,41 @@ describe('type', () => {
 			string: 'John Doe',
 		});
 	});
+
+	it('should parse nested objects', () => {
+		// Arrange.
+		const parseSchema = type({
+			type: 'string',
+			user: {
+				name: 'string',
+				age: 'number',
+			},
+		});
+
+		// Act.
+		const parsedSchema = parseSchema({
+			type: 'user',
+			user: {
+				name: 'John Doe',
+				age: 30,
+			},
+		});
+
+		// Assert.
+		expect(parsedSchema).toEqual({
+			type: 'user',
+			user: {
+				name: 'John Doe',
+				age: 30,
+			},
+		});
+
+		expectTypeOf(parsedSchema).toEqualTypeOf<{
+			type: string;
+			user: {
+				name: string;
+				age: number;
+			};
+		}>();
+	});
 });

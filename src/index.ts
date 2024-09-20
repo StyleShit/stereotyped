@@ -6,14 +6,14 @@ export type { DefObject, Infer, Type } from './types';
 export function type<const T extends DefObject>(
 	definition: T,
 ): Type<RemoveReadonly<T>> {
-	return (value) => {
+	const parse = (value: unknown, def: DefObject) => {
 		if (!value || typeof value !== 'object') {
 			throw new Error('Expected an object to parse');
 		}
 
 		const parsed: Record<string, unknown> = {};
 
-		Object.entries(definition).forEach(([key, type]) => {
+		Object.entries(def).forEach(([key, type]) => {
 			if (!(key in value)) {
 				throw new Error(`Missing key ${key}`);
 			}
@@ -26,9 +26,17 @@ export function type<const T extends DefObject>(
 				return;
 			}
 
+			if (typeof type === 'object') {
+				parsed[key] = parse(propValue, type);
+
+				return;
+			}
+
 			throw new Error('Unknown type');
 		});
 
 		return parsed as never;
 	};
+
+	return (value: unknown) => parse(value, definition);
 }
