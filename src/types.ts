@@ -22,20 +22,27 @@ type Parse<T> = T extends string
 		? ParseObject<T>
 		: T;
 
-type PrimitiveTypes = {
+type PrimitiveTypesMap = {
 	string: string;
 	number: number;
-	bigint: bigint;
 	boolean: boolean;
 	null: null;
 	undefined: undefined;
 };
 
+export type PrimitiveTypes = PrimitiveTypesMap[keyof PrimitiveTypesMap];
+
 type ParseFromString<_T extends string, T extends string = Trim<_T>> =
 	// Simple types
-	T extends `${infer P extends keyof PrimitiveTypes}`
-		? PrimitiveTypes[P]
-		: never;
+	T extends `${infer P extends keyof PrimitiveTypesMap}`
+		? PrimitiveTypesMap[P]
+		: // String literals
+			T extends `'${infer P}'` | `"${infer P}"` | `\`${infer P}\``
+			? P
+			: // Literal types
+				T extends `${infer P extends Exclude<PrimitiveTypes, string>}`
+				? P
+				: never;
 
 type Trim<T extends string> = T extends ` ${infer _T}`
 	? Trim<_T>

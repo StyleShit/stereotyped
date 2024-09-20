@@ -48,7 +48,6 @@ describe('type', () => {
 			null: 'null',
 			string: 'string',
 			number: 'number',
-			bigint: 'bigint',
 			boolean: 'boolean',
 			undefined: 'undefined',
 		});
@@ -58,7 +57,6 @@ describe('type', () => {
 			null: null,
 			string: 'John Doe',
 			number: 30,
-			bigint: BigInt(30),
 			boolean: true,
 			undefined: undefined,
 		});
@@ -68,7 +66,6 @@ describe('type', () => {
 			null: null,
 			string: 'John Doe',
 			number: 30,
-			bigint: BigInt(30),
 			boolean: true,
 			undefined: undefined,
 		});
@@ -77,7 +74,6 @@ describe('type', () => {
 			null: null;
 			string: string;
 			number: number;
-			bigint: bigint;
 			boolean: boolean;
 			undefined: undefined;
 		}>();
@@ -88,7 +84,6 @@ describe('type', () => {
 				null: 'null',
 				string: 'John Doe',
 				number: 'John Doe',
-				bigint: '30',
 				boolean: 30,
 				undefined: 'undefined',
 			}),
@@ -110,6 +105,44 @@ describe('type', () => {
 		expect(parsedSchema).toEqual({
 			string: 'John Doe',
 		});
+	});
+
+	it('should parse literals', () => {
+		// Arrange.
+		const parseSchema = type({
+			string: '"John Doe"',
+			number: '30',
+			boolean: 'true',
+		});
+
+		// Act -- Valid type.
+		const parsedSchema = parseSchema({
+			string: 'John Doe',
+			number: 30,
+			boolean: true,
+		});
+
+		// Assert.
+		expect(parsedSchema).toEqual({
+			string: 'John Doe',
+			number: 30,
+			boolean: true,
+		});
+
+		expectTypeOf(parsedSchema).toEqualTypeOf<{
+			string: 'John Doe';
+			number: 30;
+			boolean: true;
+		}>();
+
+		// Act -- Invalid type.
+		expect(() =>
+			parseSchema({
+				string: 'John Doe',
+				number: 30,
+				boolean: false,
+			}),
+		).toThrow('Expected value to equal true');
 	});
 
 	it('should parse nested objects', () => {
