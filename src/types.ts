@@ -42,7 +42,10 @@ type ParseFromString<_T extends string, T extends string = Trim<_T>> =
 			: // Literal types
 				T extends `${infer P extends number | boolean}`
 				? P
-				: never;
+				: // Wrapped with brackets
+					T extends `(${infer P})`
+					? ParseFromString<P>
+					: never;
 
 type Trim<T extends string> = T extends ` ${infer _T}`
 	? Trim<_T>

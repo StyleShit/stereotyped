@@ -145,6 +145,27 @@ describe('type', () => {
 		).toThrow('Expected value to equal true');
 	});
 
+	it('should parse types wrapped with brackets', () => {
+		// Arrange.
+		const parseSchema = type({
+			string: '(string)',
+		});
+
+		// Act.
+		const parsedSchema = parseSchema({
+			string: 'John Doe',
+		});
+
+		// Assert.
+		expect(parsedSchema).toEqual({
+			string: 'John Doe',
+		});
+
+		expectTypeOf(parsedSchema).toEqualTypeOf<{
+			string: string;
+		}>();
+	});
+
 	it('should parse nested objects', () => {
 		// Arrange.
 		const parseSchema = type({

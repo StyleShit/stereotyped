@@ -13,6 +13,12 @@ export function parseFromString(type: string, value: unknown) {
 		return parsePrimitiveType(type as never, value);
 	}
 
+	const wrappedWithBrackets = type.match(/^\((.+)\)$/);
+
+	if (wrappedWithBrackets?.[1]) {
+		return parseFromString(wrappedWithBrackets[1], value);
+	}
+
 	const stringLiteral = type.match(/^(['"`])(.+)(\1)$/);
 
 	if (stringLiteral?.[2]) {
