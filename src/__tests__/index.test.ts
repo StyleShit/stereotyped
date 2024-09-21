@@ -50,6 +50,7 @@ describe('type', () => {
 			number: 'number',
 			boolean: 'boolean',
 			undefined: 'undefined',
+			object: 'object',
 		});
 
 		// Act -- Valid type.
@@ -59,6 +60,9 @@ describe('type', () => {
 			number: 30,
 			boolean: true,
 			undefined: undefined,
+			object: {
+				key: 'value',
+			},
 		});
 
 		// Assert.
@@ -68,6 +72,9 @@ describe('type', () => {
 			number: 30,
 			boolean: true,
 			undefined: undefined,
+			object: {
+				key: 'value',
+			},
 		});
 
 		expectTypeOf(parsedSchema).toEqualTypeOf<{
@@ -76,6 +83,7 @@ describe('type', () => {
 			number: number;
 			boolean: boolean;
 			undefined: undefined;
+			object: object;
 		}>();
 
 		// Act -- Invalid type.
@@ -86,6 +94,7 @@ describe('type', () => {
 				number: 'John Doe',
 				boolean: 30,
 				undefined: 'undefined',
+				object: 'object',
 			}),
 		).toThrow('Expected type null');
 	});

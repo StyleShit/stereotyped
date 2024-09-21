@@ -28,6 +28,7 @@ type PrimitiveTypesMap = {
 	boolean: boolean;
 	null: null;
 	undefined: undefined;
+	object: object;
 };
 
 export type PrimitiveTypes = PrimitiveTypesMap[keyof PrimitiveTypesMap];
