@@ -19,7 +19,7 @@ const parseUser = type({
   isCool: 'boolean',
   isAwesome: '"yes" | "no"',
   friends: 'string[]',
-  hobbies: '[string, string]',
+  'hobbies?': '[string, string]',
   address: {
     street: 'string',
     city: 'string',
@@ -51,7 +51,7 @@ type User = {
   isCool: boolean;
   isAwesome: 'yes' | 'no';
   friends: string[];
-  hobbies: [string, string];
+  hobbies?: [string, string] | undefined;
   address: {
     street: string;
     city: string;
