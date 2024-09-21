@@ -1,12 +1,12 @@
 {
-	"name": "typed",
+	"name": "stereotyped",
 	"description": "TypeScript 1:1 schema validation, inspired by ArkType",
 	"version": "0.1.0",
 	"author": "StyleShit",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/StyleShit/typed.git"
+		"url": "git+https://github.com/StyleShit/stereotyped.git"
 	},
 	"type": "module",
 	"main": "dist/index.cjs",

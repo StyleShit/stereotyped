@@ -1,4 +1,4 @@
-# Typed
+# StereoTyped
 
 TypeScript 1:1 schema validation, inspired by [ArkType](https://arktype.io).
 
@@ -6,12 +6,12 @@ The goal of this library is to provide a way to write TypeScript-like type defin
 
 ## Usage
 
-Using `Typed` is very similar to how you would write TypeScript types. To define a type, you can use the `type` function, which takes
+Using `StereoTyped` is very similar to how you would write TypeScript types. To define a type, you can use the `type` function, which takes
 an object with the type definition. This function returns a validation function that throws an error when the input data does not match
 the type definition. Here is an example:
 
 ```typescript
-import { type } from 'typed';
+import { type } from 'stereotyped';
 
 const parseUser = type({
   name: 'string',
@@ -60,10 +60,10 @@ type User = {
 };
 ```
 
-You can infer the parsed type of a schema by using the `Infer` util type from `Typed`:
+You can infer the parsed type of a schema by using the `Infer` util type from `StereoTyped`:
 
 ```typescript
-import { type, type Infer } from 'typed';
+import { type, type Infer } from 'stereotyped';
 
 const schema = type({
   name: 'string',
@@ -76,7 +76,7 @@ type User = Infer<typeof schema>;
 
 ## Supported Types
 
-`Typed` supports the following types & features:
+`StereoTyped` supports the following types & features:
 
 - `string`
 - `number`
