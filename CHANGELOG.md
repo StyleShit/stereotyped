@@ -1,5 +1,11 @@
 # typed
 
+## 0.1.2
+
+### Patch Changes
+
+- c4f3492: Add optional property documentation
+
 ## 0.1.1
 
 ### Patch Changes
