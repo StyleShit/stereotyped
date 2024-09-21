@@ -31,6 +31,12 @@ export function parseFromString(type: string, value: unknown) {
 		return parseArray(arrayBrackets[1], value);
 	}
 
+	const tuple = type.match(/^\[(.+)\]$/);
+
+	if (tuple?.[1]) {
+		return parseTuple(tuple[1].split(','), value);
+	}
+
 	const stringLiteral = type.match(/^(['"`])(.+)(\1)$/);
 
 	if (stringLiteral?.[2]) {
@@ -92,4 +98,18 @@ function parseArray(type: string, value: unknown): unknown[] {
 	}
 
 	return value.map((item) => parseFromString(type, item));
+}
+
+function parseTuple(parts: string[], value: unknown): unknown[] {
+	if (!Array.isArray(value)) {
+		throw new Error('Expected an array');
+	}
+
+	if (parts.length !== value.length) {
+		throw new Error(
+			`Expected ${String(parts.length)} items, got ${String(value.length)}`,
+		);
+	}
+
+	return parts.map((part, index) => parseFromString(part, value[index]));
 }

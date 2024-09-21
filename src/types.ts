@@ -48,13 +48,22 @@ type ParseFromString<_T extends string, T extends string = Trim<_T>> =
 					: // Arrays
 						T extends `Array<${infer P}>` | `${infer P}[]`
 						? Array<ParseFromString<P>>
-						: never;
+						: // Tuples
+							T extends `[${infer P}]`
+							? ParseTupleParts<P>
+							: never;
 
 type Trim<T extends string> = T extends ` ${infer _T}`
 	? Trim<_T>
 	: T extends `${infer _T} `
 		? Trim<_T>
 		: T;
+
+type ParseTupleParts<T extends string> = T extends ''
+	? []
+	: T extends `${infer F},${infer R}`
+		? [ParseFromString<F>, ...ParseTupleParts<R>]
+		: [ParseFromString<T>];
 
 type Prettify<T> = {
 	[K in keyof T]: Prettify<T[K]>;

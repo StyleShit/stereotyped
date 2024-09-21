@@ -204,6 +204,41 @@ describe('type', () => {
 		).toThrow('Expected type string');
 	});
 
+	it('should parse tuples', () => {
+		// Arrange.
+		const parseSchema = type({
+			tuple: '[string, number, boolean]',
+		});
+
+		// Act - Valid type.
+		const parsedSchema = parseSchema({
+			tuple: ['John Doe', 30, true],
+		});
+
+		// Assert.
+		expect(parsedSchema).toEqual({
+			tuple: ['John Doe', 30, true],
+		});
+
+		expectTypeOf(parsedSchema).toEqualTypeOf<{
+			tuple: [string, number, boolean];
+		}>();
+
+		// Act - Invalid type
+		expect(() =>
+			parseSchema({
+				tuple: ['John Doe', 30, 'true'],
+			}),
+		).toThrow('Expected type boolean');
+
+		// Act - Invalid length
+		expect(() =>
+			parseSchema({
+				tuple: ['John Doe', 30],
+			}),
+		).toThrow('Expected 3 items, got 2');
+	});
+
 	it('should parse nested objects', () => {
 		// Arrange.
 		const parseSchema = type({
