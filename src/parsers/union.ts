@@ -13,8 +13,19 @@ export function parseUnion(type: string, value: unknown): unknown {
 	const type2 = match?.[2] ?? '';
 
 	try {
-		return parseFromString(type1, value);
+		return either(
+			() => parseFromString(type1, value),
+			() => parseFromString(type2, value),
+		);
 	} catch {
-		return parseFromString(type2, value);
+		throw new Error(`Expected type ${type}`);
+	}
+}
+
+function either(cb1: () => unknown, cb2: () => unknown) {
+	try {
+		return cb1();
+	} catch {
+		return cb2();
 	}
 }

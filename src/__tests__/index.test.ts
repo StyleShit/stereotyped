@@ -334,7 +334,7 @@ describe('type', () => {
 				array: ['John Doe', 30],
 				literal: 'john',
 			}),
-		).toThrow('Expected type number');
+		).toThrow('Expected type string|number');
 	});
 
 	it('should parse optional keys', () => {
