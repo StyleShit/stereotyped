@@ -40,7 +40,7 @@ type ParseFromString<_T extends string, T extends string = Trim<_T>> =
 			T extends `'${infer P}'` | `"${infer P}"` | `\`${infer P}\``
 			? P
 			: // Literal types
-				T extends `${infer P extends Exclude<PrimitiveTypes, string>}`
+				T extends `${infer P extends number | boolean}`
 				? P
 				: never;
 
