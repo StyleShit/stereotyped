@@ -19,6 +19,18 @@ export function parseFromString(type: string, value: unknown) {
 		return parseFromString(wrappedWithBrackets[1], value);
 	}
 
+	const arrayKeyword = type.match(/^Array<(.+)>$/);
+
+	if (arrayKeyword?.[1]) {
+		return parseArray(arrayKeyword[1], value);
+	}
+
+	const arrayBrackets = type.match(/^(.+)\[\]$/);
+
+	if (arrayBrackets?.[1]) {
+		return parseArray(arrayBrackets[1], value);
+	}
+
 	const stringLiteral = type.match(/^(['"`])(.+)(\1)$/);
 
 	if (stringLiteral?.[2]) {
@@ -72,4 +84,12 @@ function parsePrimitiveLiteral(literal: string, value: unknown) {
 	}
 
 	return value;
+}
+
+function parseArray(type: string, value: unknown): unknown[] {
+	if (!Array.isArray(value)) {
+		throw new Error('Expected an array');
+	}
+
+	return value.map((item) => parseFromString(type, item));
 }

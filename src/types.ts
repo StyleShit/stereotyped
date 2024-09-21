@@ -45,7 +45,10 @@ type ParseFromString<_T extends string, T extends string = Trim<_T>> =
 				: // Wrapped with brackets
 					T extends `(${infer P})`
 					? ParseFromString<P>
-					: never;
+					: // Arrays
+						T extends `Array<${infer P}>` | `${infer P}[]`
+						? Array<ParseFromString<P>>
+						: never;
 
 type Trim<T extends string> = T extends ` ${infer _T}`
 	? Trim<_T>

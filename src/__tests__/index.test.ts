@@ -166,6 +166,44 @@ describe('type', () => {
 		}>();
 	});
 
+	it('should parse arrays', () => {
+		// Arrange.
+		const parseSchema = type({
+			strings: 'Array<string>',
+			numbers: 'number[]',
+			booleans: '(boolean)[]',
+		});
+
+		// Act -- Valid type.
+		const parsedSchema = parseSchema({
+			strings: ['John Doe'],
+			numbers: [30],
+			booleans: [true],
+		});
+
+		// Assert.
+		expect(parsedSchema).toEqual({
+			strings: ['John Doe'],
+			numbers: [30],
+			booleans: [true],
+		});
+
+		expectTypeOf(parsedSchema).toEqualTypeOf<{
+			strings: string[];
+			numbers: number[];
+			booleans: boolean[];
+		}>();
+
+		// Act -- Invalid type.
+		expect(() =>
+			parseSchema({
+				strings: ['string', 30],
+				numbers: ['John Doe'],
+				booleans: [30],
+			}),
+		).toThrow('Expected type string');
+	});
+
 	it('should parse nested objects', () => {
 		// Arrange.
 		const parseSchema = type({
