@@ -6,9 +6,24 @@ export type Type<T extends DefObject> = (
 	value: unknown,
 ) => Prettify<ParseObject<T>>;
 
-export type ParseObject<T extends DefObject> = {
-	[K in keyof T]: Parse<T[K]>;
-};
+export type ParseObject<T extends DefObject> = UnionToIntersection<
+	{
+		[K in keyof T]: K extends `${infer _K}?`
+			? {
+					-readonly [K2 in _K]?: Parse<T[K]>;
+				}
+			: {
+					-readonly [K2 in K]: Parse<T[K]>;
+				};
+	}[keyof T]
+>;
+
+// See https://stackoverflow.com/a/50375286
+type UnionToIntersection<T> = (T extends T ? (t: T) => void : never) extends (
+	p: infer P,
+) => void
+	? P
+	: never;
 
 export type Infer<T extends Type<DefObject>> = ReturnType<T>;
 

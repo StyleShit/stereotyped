@@ -14,7 +14,21 @@ export function type<const T extends DefObject>(
 		const parsed: Record<string, unknown> = {};
 
 		Object.entries(def).forEach(([key, type]) => {
-			if (!(key in value)) {
+			const isOptional = key.length >= 2 && key.endsWith('?');
+
+			key = key.replace(/(.+)\?/, '$1');
+
+			const keyExists = key in value;
+
+			if (
+				isOptional &&
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				(!keyExists || value[key as never] === undefined)
+			) {
+				return;
+			}
+
+			if (!isOptional && !keyExists) {
 				throw new Error(`Missing key ${key}`);
 			}
 

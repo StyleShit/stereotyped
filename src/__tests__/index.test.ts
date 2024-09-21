@@ -329,4 +329,67 @@ describe('type', () => {
 			}),
 		).toThrow('Expected type number');
 	});
+
+	it('should parse optional keys', () => {
+		// Arrange.
+		const parseSchema = type({
+			name: 'string',
+			age: 'number',
+			'optional?': 'string',
+		});
+
+		// Act - Valid type 1.
+		const parsedSchema1 = parseSchema({
+			name: 'John Doe',
+			age: 30,
+		});
+
+		// Assert.
+		expect(parsedSchema1).toEqual({
+			name: 'John Doe',
+			age: 30,
+		});
+
+		expectTypeOf(parsedSchema1).toEqualTypeOf<{
+			name: string;
+			age: number;
+			optional?: string;
+		}>();
+
+		// Act - Valid type 2.
+		const parsedSchema2 = parseSchema({
+			name: 'John Doe',
+			age: 30,
+			optional: undefined,
+		});
+
+		// Assert.
+		expect(parsedSchema2).toEqual({
+			name: 'John Doe',
+			age: 30,
+		});
+
+		// Act - Valid type 3.
+		const parsedSchema3 = parseSchema({
+			name: 'John Doe',
+			age: 30,
+			optional: 'optional',
+		});
+
+		// Assert.
+		expect(parsedSchema3).toEqual({
+			name: 'John Doe',
+			age: 30,
+			optional: 'optional',
+		});
+
+		// Act - Invalid type.
+		expect(() =>
+			parseSchema({
+				name: 'John Doe',
+				age: 30,
+				optional: 30,
+			}),
+		).toThrow('Expected type string');
+	});
 });
