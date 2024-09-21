@@ -1,7 +1,7 @@
 {
 	"name": "stereotyped",
 	"description": "TypeScript 1:1 schema validation, inspired by ArkType",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"author": "StyleShit",
 	"license": "MIT",
 	"repository": {
