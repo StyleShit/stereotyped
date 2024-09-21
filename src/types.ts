@@ -52,7 +52,10 @@ type ParseFromString<_T extends string, T extends string = Trim<_T>> =
 						: // Tuples
 							T extends `[${infer P}]`
 							? ParseTupleParts<P>
-							: never;
+							: // Unions
+								T extends `${infer P1}|${infer P2}`
+								? ParseFromString<P1> | ParseFromString<P2>
+								: never;
 
 type Trim<T extends string> = T extends ` ${infer _T}`
 	? Trim<_T>

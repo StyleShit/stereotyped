@@ -233,14 +233,14 @@ describe('type', () => {
 			tuple: [string, number, boolean];
 		}>();
 
-		// Act - Invalid type
+		// Act - Invalid type.
 		expect(() =>
 			parseSchema({
 				tuple: ['John Doe', 30, 'true'],
 			}),
 		).toThrow('Expected type boolean');
 
-		// Act - Invalid length
+		// Act - Invalid length.
 		expect(() =>
 			parseSchema({
 				tuple: ['John Doe', 30],
@@ -283,5 +283,50 @@ describe('type', () => {
 				age: number;
 			};
 		}>();
+	});
+
+	it('should parse unions', () => {
+		// Arrange.
+		const parseSchema = type({
+			type: 'string|number',
+			array: 'Array<string | number>',
+		});
+
+		// Act - Valid type 1.
+		const parsedSchema1 = parseSchema({
+			type: 'John Doe',
+			array: ['John Doe', 30],
+		});
+
+		// Assert.
+		expect(parsedSchema1).toEqual({
+			type: 'John Doe',
+			array: ['John Doe', 30],
+		});
+
+		expectTypeOf(parsedSchema1).toEqualTypeOf<{
+			type: string | number;
+			array: Array<string | number>;
+		}>();
+
+		// Act - Valid type 2.
+		const parsedSchema2 = parseSchema({
+			type: 30,
+			array: [20, 30],
+		});
+
+		// Assert.
+		expect(parsedSchema2).toEqual({
+			type: 30,
+			array: [20, 30],
+		});
+
+		// Act - Invalid type.
+		expect(() =>
+			parseSchema({
+				type: true,
+				array: ['John Doe', 30],
+			}),
+		).toThrow('Expected type number');
 	});
 });

@@ -38,6 +38,12 @@ export function parseFromString(type: string, value: unknown) {
 		return parseTuple(tuple[1].split(','), value);
 	}
 
+	const union = type.match(/^(.+)\|(.+)$/);
+
+	if (union?.[1] && union[2]) {
+		return parseUnion(union[1], union[2], value);
+	}
+
 	const stringLiteral = type.match(/^(['"`])(.+)(\1)$/);
 
 	if (stringLiteral?.[2]) {
@@ -113,4 +119,12 @@ function parseTuple(parts: string[], value: unknown): unknown[] {
 	}
 
 	return parts.map((part, index) => parseFromString(part, value[index]));
+}
+
+function parseUnion(type1: string, type2: string, value: unknown): unknown {
+	try {
+		return parseFromString(type1, value);
+	} catch {
+		return parseFromString(type2, value);
+	}
 }
