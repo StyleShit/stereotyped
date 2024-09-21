@@ -1,5 +1,5 @@
 import { describe, expect, expectTypeOf, it } from 'vitest';
-import { type } from '..';
+import { type, type Infer } from '..';
 
 describe('type', () => {
 	it('should throw for non objects', () => {
@@ -398,5 +398,20 @@ describe('type', () => {
 				optional: 30,
 			}),
 		).toThrow('Expected type string');
+	});
+
+	it('should infer the schema type', () => {
+		// Arrange.
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const parseSchema = type({
+			name: 'string',
+			age: 'number',
+		});
+
+		// Assert.
+		expectTypeOf<Infer<typeof parseSchema>>().toEqualTypeOf<{
+			name: string;
+			age: number;
+		}>();
 	});
 });

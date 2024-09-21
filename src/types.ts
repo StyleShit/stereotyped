@@ -25,7 +25,7 @@ type UnionToIntersection<T> = (T extends T ? (t: T) => void : never) extends (
 	? P
 	: never;
 
-export type Infer<T extends Type<DefObject>> = ReturnType<T>;
+export type Infer<T extends Type<any>> = ReturnType<T>;
 
 export type RemoveReadonly<T> = {
 	-readonly [K in keyof T]: RemoveReadonly<T[K]>;
