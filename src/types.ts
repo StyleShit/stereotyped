@@ -37,7 +37,7 @@ type Parse<T> = T extends string
 		? ParseObject<T>
 		: T;
 
-type PrimitiveTypesMap = {
+type TypesByKeywords = {
 	string: string;
 	number: number;
 	boolean: boolean;
@@ -46,12 +46,10 @@ type PrimitiveTypesMap = {
 	object: object;
 };
 
-export type PrimitiveTypes = PrimitiveTypesMap[keyof PrimitiveTypesMap];
-
 type ParseFromString<_T extends string, T extends string = Trim<_T>> =
 	// Simple types
-	T extends `${infer P extends keyof PrimitiveTypesMap}`
-		? PrimitiveTypesMap[P]
+	T extends `${infer P extends keyof TypesByKeywords}`
+		? TypesByKeywords[P]
 		: // String literals
 			T extends `'${infer P}'` | `"${infer P}"` | `\`${infer P}\``
 			? P
