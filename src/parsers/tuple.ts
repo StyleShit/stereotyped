@@ -21,5 +21,7 @@ export function parseTuple(type: string, value: unknown): unknown[] {
 		);
 	}
 
-	return parts.map((part, index) => parseFromString(part, value[index]));
+	return parts.map((partType, index) =>
+		parseFromString(partType, value[index]),
+	);
 }
