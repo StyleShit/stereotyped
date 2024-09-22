@@ -14,7 +14,7 @@ export function type<const T extends DefObject>(
 		Object.entries(def).forEach(([key, type]) => {
 			const isOptional = key.length >= 2 && key.endsWith('?');
 
-			key = key.replace(/(.+)\?/, '$1');
+			key = key.replace(/^(.+)\?$/, '$1');
 
 			const keyExists = key in value;
 
