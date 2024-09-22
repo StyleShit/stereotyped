@@ -7,7 +7,7 @@ export function isLiteral(type: string) {
 
 export function parseLiteral(type: string, value: unknown) {
 	const match = type.match(regex);
-	let literal: string | number | boolean | undefined = undefined;
+	let literal: unknown = undefined;
 
 	if (match?.groups?.string) {
 		literal = match.groups.string;
