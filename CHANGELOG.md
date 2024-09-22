@@ -1,5 +1,11 @@
 # typed
 
+## 0.1.3
+
+### Patch Changes
+
+- b933c78: Fix optional key detection
+
 ## 0.1.2
 
 ### Patch Changes
