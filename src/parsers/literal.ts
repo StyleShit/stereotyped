@@ -9,8 +9,6 @@ export function parseLiteral(type: string, value: unknown) {
 	const match = type.match(regex);
 	let literal: string | number | boolean | undefined = undefined;
 
-	const compare = () => value === literal;
-
 	if (match?.groups?.string) {
 		literal = match.groups.string;
 	}
@@ -23,7 +21,7 @@ export function parseLiteral(type: string, value: unknown) {
 		literal = match.groups.boolean === 'true';
 	}
 
-	if (!compare()) {
+	if (value !== literal) {
 		throw new Error(
 			`Expected value to equal ${String(literal)}, got ${String(value)} (${typeof value})`,
 		);
