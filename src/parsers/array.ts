@@ -12,10 +12,10 @@ export function parseArray(type: string, value: unknown): unknown[] {
 		throw new Error('Expected an array');
 	}
 
-	const arrayType =
+	const itemType =
 		type.match(arrayKeywordRegex)?.[1] ??
 		type.match(arrayBracketsRegex)?.[1] ??
 		'';
 
-	return value.map((item) => parseFromString(arrayType, item));
+	return value.map((item) => parseFromString(itemType, item));
 }
